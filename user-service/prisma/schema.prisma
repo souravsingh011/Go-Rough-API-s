@@ -23,10 +23,10 @@ model userSignUp {
   alternate_phone_no String?
   profile_photo      String?
   role               String
-  VehicleInformation vehicleInformation[]
-  AddressInformation addressInformation[]
-  Payment            payment[]
-  AccountSetting     accountSetting[]
+  vehicleInformation vehicleInformation[]
+  addressInformation addressInformation[]
+  payment            payment[]
+  accountSetting     accountSetting[]
 }
 
 model vehicleInformation {

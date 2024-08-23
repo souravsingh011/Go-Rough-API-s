@@ -89,7 +89,7 @@ Example:
         const userSignUP = await this.userSignUpService.getAll();
         res.status(200).json(userSignUP);
         } catch (error) {
-        res.status(500).json({ message: "Error fetching book status", error });
+        res.status(500).json({ message: "Error fetching User status", error });
         }
     };
 
