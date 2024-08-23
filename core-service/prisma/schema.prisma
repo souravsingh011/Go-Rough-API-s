@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model addpricehours {
+  id    Int    @id @default(autoincrement())
+  title String
+  price Float
+  hours Int
+}
+
+model bookingstatus {
+  id     Int    @id @default(autoincrement())
+  status String
+}
+
+model city {
+  id        Int    @id @default(autoincrement())
+  city_name String
+}
+
+model country {
+  id           Int    @id @default(autoincrement())
+  country_name String
+  country_code String
+}
+
+model date {
+  id        Int      @id @default(autoincrement())
+  from_date DateTime
+  to_date   DateTime
+}
+
+model garagebusinesshours {
+  id     Int                        @id @default(autoincrement())
+  day    garagebusinesshours_day
+  from   DateTime
+  to     DateTime
+  status garagebusinesshours_status
+}
+
+model lcclass {
+  lc_id   Int    @id @default(autoincrement())
+  lc_name String
+}
+
+model place {
+  id    Int         @id @default(autoincrement())
+  place place_place
+}
+
+model pricehour {
+  id    Int   @id @default(autoincrement())
+  price Float
+  hours Int
+}
+
+model state {
+  id         Int    @id @default(autoincrement())
+  state_name String
+}
+
+model vehiclecolor {
+  id    Int    @id @default(autoincrement())
+  color String
+}
+
+model vehiclemodel {
+  id    Int    @id @default(autoincrement())
+  model String
+}
+
+model vehicletype {
+  id   Int    @id @default(autoincrement())
+  type String
+}
+
+enum garagebusinesshours_day {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+enum place_place {
+  Work
+  FriendsHouse
+}
+
+enum garagebusinesshours_status {
+  open
+  closed
+}
