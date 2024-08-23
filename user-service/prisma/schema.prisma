@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model userSignUp {
+  id                 Int                  @id @default(autoincrement())
+  country_id         Int
+  phone_no           String
+  verification_code  String
+  full_name          String
+  password           String
+  alternate_phone_no String?
+  profile_photo      String?
+  role               String
+  VehicleInformation vehicleInformation[]
+  AddressInformation addressInformation[]
+  Payment            payment[]
+  AccountSetting     accountSetting[]
+}
+
+model vehicleInformation {
+  id                      Int        @id @default(autoincrement())
+  user_sign_up_id         Int
+  vehicle_type_id         Int
+  vehicle_model_id        Int
+  vehicle_registration_no String
+  vehicle_color_id        Int
+  user                    userSignUp @relation(fields: [user_sign_up_id], references: [id])
+}
+
+model addressInformation {
+  id              Int        @id @default(autoincrement())
+  user_sign_up_id Int
+  address_line1   String
+  address_line2   String?
+  city_id         Int
+  state_id        Int
+  country_id      Int
+  pin_code        String
+  place_id        Int
+  user            userSignUp @relation(fields: [user_sign_up_id], references: [id])
+}
+
+model payment {
+  id                 Int        @id @default(autoincrement())
+  user_sign_up_id    Int
+  service_total      Float
+  convenience_charge Float
+  coupon_code        String?
+  payment_method     String
+  user               userSignUp @relation(fields: [user_sign_up_id], references: [id])
+}
+
+model accountSetting {
+  id              Int        @id @default(autoincrement())
+  user_sign_up_id Int
+  notification    Boolean
+  user            userSignUp @relation(fields: [user_sign_up_id], references: [id])
+}
