@@ -1,7 +1,7 @@
 import { PrismaClient, selectservice } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class selectserviceRepository {
+class SelectServiceRepository {
   getAll = async (): Promise<selectservice[]> => {
     return await prisma.selectservice.findMany();
   };
@@ -29,4 +29,4 @@ class selectserviceRepository {
   };
 }
 
-export default selectserviceRepository;
+export default SelectServiceRepository;

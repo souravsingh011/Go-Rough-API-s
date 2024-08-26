@@ -1,7 +1,7 @@
 import { PrismaClient, serviceIncludes } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class serviceIncludesRepository {
+class ServiceIncludesRepository {
   getAll = async (): Promise<serviceIncludes[]> => {
     return await prisma.serviceIncludes.findMany();
   };
@@ -31,4 +31,4 @@ class serviceIncludesRepository {
   };
 }
 
-export default serviceIncludesRepository;
+export default ServiceIncludesRepository;

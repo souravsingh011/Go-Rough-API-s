@@ -1,31 +1,31 @@
-import BookingStatusRepository from "../repository/bookingstatus.repository";
-import { bookingstatus } from "@prisma/client";
+import { serviceType } from "@prisma/client";
+import ServiceTypeRepository from "../repository/servicetype.repository";
 
-class BookingStatusService {
-  bookingStatusRepository: BookingStatusRepository;
+class ServiceTypeService {
+  serviceTypeRepository: ServiceTypeRepository;
   constructor() {
-    this.bookingStatusRepository = new BookingStatusRepository();
+    this.serviceTypeRepository = new ServiceTypeRepository();
   }
 
-  create = async (data: Omit<bookingstatus, "id">): Promise<bookingstatus> => {
-    return await this.bookingStatusRepository.create(data);
+  create = async (data: Omit<serviceType, "id">): Promise<serviceType> => {
+    return await this.serviceTypeRepository.create(data);
   };
 
   getAll = async () => {
-    return await this.bookingStatusRepository.getAll();
+    return await this.serviceTypeRepository.getAll();
   };
 
   getById = async (id: number) => {
-    return await this.bookingStatusRepository.getById(id);
+    return await this.serviceTypeRepository.getById(id);
   };
 
-  update = async (id: number, data: Partial<Omit<bookingstatus, "id">>) => {
-    return await this.bookingStatusRepository.update(id, data);
+  update = async (id: number, data: Partial<Omit<serviceType, "id">>) => {
+    return await this.serviceTypeRepository.update(id, data);
   };
 
   delete = async (id: number) => {
-    return await this.bookingStatusRepository.delete(id);
+    return await this.serviceTypeRepository.delete(id);
   };
 }
 
-export default BookingStatusService;
+export default ServiceTypeService;

@@ -1,7 +1,7 @@
 import { PrismaClient, customservice } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class customserviceRepository {
+class CustomServiceRepository {
   getAll = async (): Promise<customservice[]> => {
     return await prisma.customservice.findMany();
   };
@@ -29,4 +29,4 @@ class customserviceRepository {
   };
 }
 
-export default customserviceRepository;
+export default CustomServiceRepository;

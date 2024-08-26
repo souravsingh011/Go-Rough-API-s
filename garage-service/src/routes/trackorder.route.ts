@@ -1,16 +1,14 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import OrderController from "../controller/trackorder.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const OrderRoute = express.Router();
+const orderController = new OrderController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+OrderRoute.route("/").post(orderController.create).get(orderController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+OrderRoute.route("/:id")
+  .get(orderController.getById)
+  .put(orderController.update)
+  .delete(orderController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = OrderRoute;

@@ -1,7 +1,7 @@
 import { PrismaClient, mechanicSignUp } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class mechanicSignUpRepository {
+class MechanicSignUpRepository {
   getAll = async (): Promise<mechanicSignUp[]> => {
     return await prisma.mechanicSignUp.findMany();
   };
@@ -31,4 +31,4 @@ class mechanicSignUpRepository {
   };
 }
 
-export default mechanicSignUpRepository;
+export default MechanicSignUpRepository;

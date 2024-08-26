@@ -1,63 +1,65 @@
-// src/controllers/cityController.ts
 import { Request, Response } from "express";
-import CityService from "../services/city.service";
+import CustomServiceService from "../services/customservice.service";
 
-class CityController {
-  cityService: CityService;
+class CustomServiceController {
+  customServiceService: CustomServiceService;
   constructor() {
-    this.cityService = new CityService();
+    this.customServiceService = new CustomServiceService();
   }
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      const cities = await this.cityService.getAll();
-      res.status(200).json(cities);
+      const customService = await this.customServiceService.getAll();
+      res.status(200).json(customService);
     } catch (error) {
-      res.status(500).json({ message: "Error fetching cities", error });
+      res.status(500).json({ message: "Error fetching custom service", error });
     }
   };
 
   getById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const city = await this.cityService.getById(Number(id));
-      if (city) {
-        res.status(200).json(city);
+      const customService = await this.customServiceService.getById(Number(id));
+      if (customService) {
+        res.status(200).json(customService);
       } else {
-        res.status(404).json({ message: "City not found" });
+        res.status(404).json({ message: "Custom service not found" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error fetching city", error });
+      res.status(500).json({ message: "Error fetching custom service", error });
     }
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const newCity = await this.cityService.create(req.body);
-      res.status(201).json(newCity);
+      const newcustomService = await this.customServiceService.create(req.body);
+      res.status(201).json(newcustomService);
     } catch (error) {
-      res.status(500).json({ message: "Error creating city", error });
+      res.status(500).json({ message: "Error creating custom service", error });
     }
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const updatedCity = await this.cityService.update(Number(id), req.body);
-      res.status(200).json(updatedCity);
+      const updatedcustomService = await this.customServiceService.update(
+        Number(id),
+        req.body
+      );
+      res.status(200).json(updatedcustomService);
     } catch (error) {
-      res.status(500).json({ message: "Error updating city", error });
+      res.status(500).json({ message: "Error updating customService", error });
     }
   };
 
   delete = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      await this.cityService.delete(Number(id));
+      await this.customServiceService.delete(Number(id));
       res.status(204).send(); // No content response
     } catch (error) {
-      res.status(500).json({ message: "Error deleting city", error });
+      res.status(500).json({ message: "Error deleting custom service", error });
     }
   };
 }
 
-export default CityController;
+export default CustomServiceController;

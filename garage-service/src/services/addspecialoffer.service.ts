@@ -1,31 +1,33 @@
-import BookingStatusRepository from "../repository/bookingstatus.repository";
-import { bookingstatus } from "@prisma/client";
+import { addSpecialOffer } from "@prisma/client";
+import AddSpecialOfferRepository from "../repository/addspecialoffer.repository";
 
-class BookingStatusService {
-  bookingStatusRepository: BookingStatusRepository;
+class AddSpecialOfferService {
+  addSpecialOfferRepository: AddSpecialOfferRepository;
   constructor() {
-    this.bookingStatusRepository = new BookingStatusRepository();
+    this.addSpecialOfferRepository = new AddSpecialOfferRepository();
   }
 
-  create = async (data: Omit<bookingstatus, "id">): Promise<bookingstatus> => {
-    return await this.bookingStatusRepository.create(data);
+  create = async (
+    data: Omit<addSpecialOffer, "id">
+  ): Promise<addSpecialOffer> => {
+    return await this.addSpecialOfferRepository.create(data);
   };
 
   getAll = async () => {
-    return await this.bookingStatusRepository.getAll();
+    return await this.addSpecialOfferRepository.getAll();
   };
 
   getById = async (id: number) => {
-    return await this.bookingStatusRepository.getById(id);
+    return await this.addSpecialOfferRepository.getById(id);
   };
 
-  update = async (id: number, data: Partial<Omit<bookingstatus, "id">>) => {
-    return await this.bookingStatusRepository.update(id, data);
+  update = async (id: number, data: Partial<Omit<addSpecialOffer, "id">>) => {
+    return await this.addSpecialOfferRepository.update(id, data);
   };
 
   delete = async (id: number) => {
-    return await this.bookingStatusRepository.delete(id);
+    return await this.addSpecialOfferRepository.delete(id);
   };
 }
 
-export default BookingStatusService;
+export default AddSpecialOfferService;

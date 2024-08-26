@@ -1,31 +1,31 @@
-import BookingStatusRepository from "../repository/bookingstatus.repository";
-import { bookingstatus } from "@prisma/client";
+import { paymentMethod } from "@prisma/client";
+import PaymentMethodRepository from "../repository/paymentmethod.repository";
 
-class BookingStatusService {
-  bookingStatusRepository: BookingStatusRepository;
+class PaymentMethodService {
+  paymentMethodRepository: PaymentMethodRepository;
   constructor() {
-    this.bookingStatusRepository = new BookingStatusRepository();
+    this.paymentMethodRepository = new PaymentMethodRepository();
   }
 
-  create = async (data: Omit<bookingstatus, "id">): Promise<bookingstatus> => {
-    return await this.bookingStatusRepository.create(data);
+  create = async (data: Omit<paymentMethod, "id">): Promise<paymentMethod> => {
+    return await this.paymentMethodRepository.create(data);
   };
 
   getAll = async () => {
-    return await this.bookingStatusRepository.getAll();
+    return await this.paymentMethodRepository.getAll();
   };
 
   getById = async (id: number) => {
-    return await this.bookingStatusRepository.getById(id);
+    return await this.paymentMethodRepository.getById(id);
   };
 
-  update = async (id: number, data: Partial<Omit<bookingstatus, "id">>) => {
-    return await this.bookingStatusRepository.update(id, data);
+  update = async (id: number, data: Partial<Omit<paymentMethod, "id">>) => {
+    return await this.paymentMethodRepository.update(id, data);
   };
 
   delete = async (id: number) => {
-    return await this.bookingStatusRepository.delete(id);
+    return await this.paymentMethodRepository.delete(id);
   };
 }
 
-export default BookingStatusService;
+export default PaymentMethodService;

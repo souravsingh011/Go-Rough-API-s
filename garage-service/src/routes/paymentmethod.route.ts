@@ -1,16 +1,16 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import PaymentController from "../controller/paymentmethod.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const PaymentRoute = express.Router();
+const paymentController = new PaymentController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+PaymentRoute.route("/")
+  .post(paymentController.create)
+  .get(paymentController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+PaymentRoute.route("/:id")
+  .get(paymentController.getById)
+  .put(paymentController.update)
+  .delete(paymentController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = PaymentRoute;

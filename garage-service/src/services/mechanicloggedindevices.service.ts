@@ -1,31 +1,37 @@
-import BookingStatusRepository from "../repository/bookingstatus.repository";
-import { bookingstatus } from "@prisma/client";
+import { mechanicLoggedInDevices } from "@prisma/client";
+import MechanicLoggedInDevicesRepository from "../repository/mechanicloggedindevices.repository";
 
-class BookingStatusService {
-  bookingStatusRepository: BookingStatusRepository;
+class MechanicLoggedInDevicesService {
+  mechanicLoggedInDevicesRepository: MechanicLoggedInDevicesRepository;
   constructor() {
-    this.bookingStatusRepository = new BookingStatusRepository();
+    this.mechanicLoggedInDevicesRepository =
+      new MechanicLoggedInDevicesRepository();
   }
 
-  create = async (data: Omit<bookingstatus, "id">): Promise<bookingstatus> => {
-    return await this.bookingStatusRepository.create(data);
+  create = async (
+    data: Omit<mechanicLoggedInDevices, "id">
+  ): Promise<mechanicLoggedInDevices> => {
+    return await this.mechanicLoggedInDevicesRepository.create(data);
   };
 
   getAll = async () => {
-    return await this.bookingStatusRepository.getAll();
+    return await this.mechanicLoggedInDevicesRepository.getAll();
   };
 
   getById = async (id: number) => {
-    return await this.bookingStatusRepository.getById(id);
+    return await this.mechanicLoggedInDevicesRepository.getById(id);
   };
 
-  update = async (id: number, data: Partial<Omit<bookingstatus, "id">>) => {
-    return await this.bookingStatusRepository.update(id, data);
+  update = async (
+    id: number,
+    data: Partial<Omit<mechanicLoggedInDevices, "id">>
+  ) => {
+    return await this.mechanicLoggedInDevicesRepository.update(id, data);
   };
 
   delete = async (id: number) => {
-    return await this.bookingStatusRepository.delete(id);
+    return await this.mechanicLoggedInDevicesRepository.delete(id);
   };
 }
 
-export default BookingStatusService;
+export default MechanicLoggedInDevicesService;

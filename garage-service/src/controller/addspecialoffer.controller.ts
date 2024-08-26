@@ -1,15 +1,14 @@
-// src/controllers/cityController.ts
 import { Request, Response } from "express";
-import CityService from "../services/city.service";
+import AddSpecialOfferService from "../services/addspecialoffer.service";
 
-class CityController {
-  cityService: CityService;
+class AddSpecialOfferController {
+  addSpecialOfferService: AddSpecialOfferService;
   constructor() {
-    this.cityService = new CityService();
+    this.addSpecialOfferService = new AddSpecialOfferService();
   }
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      const cities = await this.cityService.getAll();
+      const cities = await this.addSpecialOfferService.getAll();
       res.status(200).json(cities);
     } catch (error) {
       res.status(500).json({ message: "Error fetching cities", error });
@@ -19,7 +18,7 @@ class CityController {
   getById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const city = await this.cityService.getById(Number(id));
+      const city = await this.addSpecialOfferService.getById(Number(id));
       if (city) {
         res.status(200).json(city);
       } else {
@@ -32,7 +31,7 @@ class CityController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const newCity = await this.cityService.create(req.body);
+      const newCity = await this.addSpecialOfferService.create(req.body);
       res.status(201).json(newCity);
     } catch (error) {
       res.status(500).json({ message: "Error creating city", error });
@@ -42,7 +41,10 @@ class CityController {
   update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const updatedCity = await this.cityService.update(Number(id), req.body);
+      const updatedCity = await this.addSpecialOfferService.update(
+        Number(id),
+        req.body
+      );
       res.status(200).json(updatedCity);
     } catch (error) {
       res.status(500).json({ message: "Error updating city", error });
@@ -52,7 +54,7 @@ class CityController {
   delete = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      await this.cityService.delete(Number(id));
+      await this.addSpecialOfferService.delete(Number(id));
       res.status(204).send(); // No content response
     } catch (error) {
       res.status(500).json({ message: "Error deleting city", error });
@@ -60,4 +62,4 @@ class CityController {
   };
 }
 
-export default CityController;
+export default AddSpecialOfferController;

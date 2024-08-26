@@ -1,16 +1,16 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import AddSpecialOfferController from "../controller/addspecialoffer.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const AddSpecialOfferRoute = express.Router();
+const addSpecialOfferController = new AddSpecialOfferController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+AddSpecialOfferRoute.route("/")
+  .post(addSpecialOfferController.create)
+  .get(addSpecialOfferController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+AddSpecialOfferRoute.route("/:id")
+  .get(addSpecialOfferController.getById)
+  .put(addSpecialOfferController.update)
+  .delete(addSpecialOfferController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = AddSpecialOfferRoute;

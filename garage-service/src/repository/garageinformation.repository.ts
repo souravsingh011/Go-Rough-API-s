@@ -1,7 +1,7 @@
 import { PrismaClient, garageInformation } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class garageInformationRepository {
+class GarageInformationRepository {
   getAll = async (): Promise<garageInformation[]> => {
     return await prisma.garageInformation.findMany();
   };
@@ -31,4 +31,4 @@ class garageInformationRepository {
   };
 }
 
-export default garageInformationRepository;
+export default GarageInformationRepository;

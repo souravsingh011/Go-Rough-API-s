@@ -1,16 +1,16 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import GarageInformationController from "../controller/garageinformation.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const GarageInformationSRoute = express.Router();
+const garageInformationSController = new GarageInformationController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+GarageInformationSRoute.route("/")
+  .post(garageInformationSController.create)
+  .get(garageInformationSController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+GarageInformationSRoute.route("/:id")
+  .get(garageInformationSController.getById)
+  .put(garageInformationSController.update)
+  .delete(garageInformationSController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = GarageInformationSRoute;

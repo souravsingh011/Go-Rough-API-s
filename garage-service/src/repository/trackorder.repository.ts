@@ -1,7 +1,7 @@
 import { PrismaClient, trackOrder } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class trackOrderRepository {
+class TrackOrderRepository {
   getAll = async (): Promise<trackOrder[]> => {
     return await prisma.trackOrder.findMany();
   };
@@ -29,4 +29,4 @@ class trackOrderRepository {
   };
 }
 
-export default trackOrderRepository;
+export default TrackOrderRepository;

@@ -1,7 +1,7 @@
 import { PrismaClient, paymentMethod } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class paymentMethodRepository {
+class PaymentMethodRepository {
   getAll = async (): Promise<paymentMethod[]> => {
     return await prisma.paymentMethod.findMany();
   };
@@ -29,4 +29,4 @@ class paymentMethodRepository {
   };
 }
 
-export default paymentMethodRepository;
+export default PaymentMethodRepository;

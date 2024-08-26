@@ -1,16 +1,16 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import LoggedInDeviceController from "../controller/mechanicloggedindevices.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const LoggedInDeviceRoute = express.Router();
+const loggedInDeviceController = new LoggedInDeviceController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+LoggedInDeviceRoute.route("/")
+  .post(loggedInDeviceController.create)
+  .get(loggedInDeviceController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+LoggedInDeviceRoute.route("/:id")
+  .get(loggedInDeviceController.getById)
+  .put(loggedInDeviceController.update)
+  .delete(loggedInDeviceController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = LoggedInDeviceRoute;

@@ -1,16 +1,16 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import MechanicDetailsController from "../controller/mechanicdetails.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const MechanicDetailsRoute = express.Router();
+const mechanicDetailsController = new MechanicDetailsController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+MechanicDetailsRoute.route("/")
+  .post(mechanicDetailsController.create)
+  .get(mechanicDetailsController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+MechanicDetailsRoute.route("/:id")
+  .get(mechanicDetailsController.getById)
+  .put(mechanicDetailsController.update)
+  .delete(mechanicDetailsController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = MechanicDetailsRoute;

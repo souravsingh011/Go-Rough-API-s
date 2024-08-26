@@ -1,16 +1,16 @@
 import express from "express";
-import BookingStatusController from "../controller/bookingstatus.controller";
+import ServiceController from "../controller/service.controller";
 
-const BookingStatusRoute = express.Router();
-const bookingStatusController = new BookingStatusController();
+const ServicesRoute = express.Router();
+const serviceController = new ServiceController();
 
-BookingStatusRoute.route("/")
-  .post(bookingStatusController.create)
-  .get(bookingStatusController.getAll);
+ServicesRoute.route("/")
+  .post(serviceController.create)
+  .get(serviceController.getAll);
 
-BookingStatusRoute.route("/:id")
-  .get(bookingStatusController.getById)
-  .put(bookingStatusController.update)
-  .delete(bookingStatusController.delete);
+ServicesRoute.route("/:id")
+  .get(serviceController.getById)
+  .put(serviceController.update)
+  .delete(serviceController.delete);
 
-module.exports = BookingStatusRoute;
+module.exports = ServicesRoute;

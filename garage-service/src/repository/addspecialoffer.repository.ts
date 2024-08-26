@@ -1,7 +1,7 @@
 import { PrismaClient, addSpecialOffer } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class addSpecialOfferRepository {
+class AddSpecialOfferRepository {
   getAll = async (): Promise<addSpecialOffer[]> => {
     return await prisma.addSpecialOffer.findMany();
   };
@@ -31,4 +31,4 @@ class addSpecialOfferRepository {
   };
 }
 
-export default addSpecialOfferRepository;
+export default AddSpecialOfferRepository;

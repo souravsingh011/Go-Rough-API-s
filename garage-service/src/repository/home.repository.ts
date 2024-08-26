@@ -1,7 +1,7 @@
 import { PrismaClient, home } from "@prisma/client";
 
 const prisma = new PrismaClient();
-class homeRepository {
+class HomeRepository {
   getAll = async (): Promise<home[]> => {
     return await prisma.home.findMany();
   };
@@ -29,4 +29,4 @@ class homeRepository {
   };
 }
 
-export default homeRepository;
+export default HomeRepository;

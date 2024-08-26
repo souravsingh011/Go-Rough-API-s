@@ -1,31 +1,31 @@
-import BookingStatusRepository from "../repository/bookingstatus.repository";
-import { bookingstatus } from "@prisma/client";
+import HomeRepository from "../repository/home.repository";
+import { home } from "@prisma/client";
 
-class BookingStatusService {
-  bookingStatusRepository: BookingStatusRepository;
+class HomeService {
+  homeRepository: HomeRepository;
   constructor() {
-    this.bookingStatusRepository = new BookingStatusRepository();
+    this.homeRepository = new HomeRepository();
   }
 
-  create = async (data: Omit<bookingstatus, "id">): Promise<bookingstatus> => {
-    return await this.bookingStatusRepository.create(data);
+  create = async (data: Omit<home, "id">): Promise<home> => {
+    return await this.homeRepository.create(data);
   };
 
   getAll = async () => {
-    return await this.bookingStatusRepository.getAll();
+    return await this.homeRepository.getAll();
   };
 
   getById = async (id: number) => {
-    return await this.bookingStatusRepository.getById(id);
+    return await this.homeRepository.getById(id);
   };
 
-  update = async (id: number, data: Partial<Omit<bookingstatus, "id">>) => {
-    return await this.bookingStatusRepository.update(id, data);
+  update = async (id: number, data: Partial<Omit<home, "id">>) => {
+    return await this.homeRepository.update(id, data);
   };
 
   delete = async (id: number) => {
-    return await this.bookingStatusRepository.delete(id);
+    return await this.homeRepository.delete(id);
   };
 }
 
-export default BookingStatusService;
+export default HomeService;
