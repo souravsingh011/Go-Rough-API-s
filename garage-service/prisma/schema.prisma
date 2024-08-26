@@ -1,0 +1,212 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Models
+model mechanicSignUp {
+  id                 Int                       @id @default(autoincrement())
+  county_id          Int
+  phone_no           String
+  verification_code  String
+  full_name          String
+  password           String
+  alternate_phone_no String?
+  profile_photo      String?
+  roles              String
+  garageInformation  garageInformation[]
+  loggedInDevices    mechanicLoggedInDevices[]
+  mechanicDetails    mechanicDetails[]
+}
+
+model mechanicLoggedInDevices {
+  id                   Int                @id @default(autoincrement())
+  mechanic_fcm_token   String
+  mechanic_is_valid    Boolean
+  mechanic_device_type mechanicDeviceType
+  mechanic_device_name String
+  mechanic_last_active DateTime
+  edit_details_op      Boolean
+  mechanicSignUpId     Int
+  mechanicSignUp       mechanicSignUp     @relation(fields: [mechanicSignUpId], references: [id])
+}
+
+model garageInformation {
+  id                       Int               @id @default(autoincrement())
+  mechanicSignUpId         Int
+  garage_business_hours_id Int
+  address_line1            String
+  address_line2            String
+  gst_number               String
+  cin_number               String
+  garage_phone_number      String
+  garage_name              String
+  years_in_business        Int
+  business_license         String
+  profile_photo            String?
+  selectservice            selectservice?
+  services                 service[]
+  specialOffers            addSpecialOffer[]
+  home                     home?
+  paymentMethods           paymentMethod[]
+  mechanicSignUp           mechanicSignUp    @relation(fields: [mechanicSignUpId], references: [id])
+}
+
+model selectservice {
+  id                      Int               @id @default(autoincrement())
+  add_price_hours_id      Int
+  service_garage_provides String
+  emergency               emergencyService
+  garageInformationId     Int               @unique
+  garageInformation       garageInformation @relation(fields: [garageInformationId], references: [id])
+}
+
+model service {
+  id                  Int               @id @default(autoincrement())
+  status              serviceStatus
+  garageInformationId Int
+  service_type_id     Int
+  service_includes_id Int
+  addservice          addservice[]
+  customservice       customservice[]
+  garageInformation   garageInformation @relation(fields: [garageInformationId], references: [id])
+  serviceIncludes     serviceIncludes[]
+  serviceType         serviceType[]
+}
+
+model serviceIncludes {
+  id                           Int     @id @default(autoincrement())
+  engine_oil_replacement       Boolean
+  oil_filter_replacement       Boolean
+  air_filter_cleaning          Boolean
+  coolant_top_up               Boolean
+  windshield_replacement       Boolean
+  battery_water_top_up         Boolean
+  brakepad_sparkplugs_checking Boolean
+  car_wash                     Boolean
+  interior_vacuuming           Boolean
+  serviceId                    Int
+  service                      service @relation(fields: [serviceId], references: [id])
+}
+
+model serviceType {
+  id                Int             @id @default(autoincrement())
+  title             String
+  type              serviceTypeEnum
+  km_months         Int
+  hours             Int
+  warranty          String
+  included_services String
+  serviceId         Int
+  service           service         @relation(fields: [serviceId], references: [id])
+}
+
+model customservice {
+  id        Int     @id @default(autoincrement())
+  title     String
+  price     Float
+  isAddOn   Boolean
+  serviceId Int
+  service   service @relation(fields: [serviceId], references: [id])
+}
+
+model addservice {
+  id            Int              @id @default(autoincrement())
+  title         String
+  checkbox      Boolean
+  price_hour_id Int
+  emergency     emergencyService
+  serviceId     Int
+  service       service          @relation(fields: [serviceId], references: [id])
+}
+
+model addSpecialOffer {
+  id                           Int               @id @default(autoincrement())
+  service_id                   Int
+  applicable_services_id       Int
+  special_offer_description    String
+  minimum_purchase_requirement String
+  special_condition            String
+  offer_images                 String
+  garageInformationId          Int
+  garageInformation            garageInformation @relation(fields: [garageInformationId], references: [id])
+}
+
+model trackOrder {
+  id             Int           @id @default(autoincrement())
+  booking_status bookingStatus
+  status         serviceStatus
+  status_date    DateTime
+}
+
+model paymentMethod {
+  id                  Int               @id @default(autoincrement())
+  garageInformationId Int
+  upi_number          String
+  card_number         String
+  expiry_date         DateTime
+  cvv                 String
+  card_holder         String
+  garageInformation   garageInformation @relation(fields: [garageInformationId], references: [id])
+}
+
+model mechanicDetails {
+  id               Int            @id @default(autoincrement())
+  name             String
+  phone_number     String
+  mechanicSignUpId Int
+  mechanicSignUp   mechanicSignUp @relation(fields: [mechanicSignUpId], references: [id])
+}
+
+model home {
+  id                  Int               @id @default(autoincrement())
+  status              homeStatus
+  garageInformationId Int               @unique
+  garageInformation   garageInformation @relation(fields: [garageInformationId], references: [id])
+}
+
+// Enums
+enum bookingStatus {
+  ONGOING
+  UPCOMING
+  PAST
+}
+
+enum serviceStatus {
+  ONGOING
+  UPCOMING
+  PAST
+}
+
+enum homeStatus {
+  DIRECTION
+  REJECT
+  ACCEPT
+}
+
+enum mechanicDeviceType {
+  MOBILE
+  TABLET
+  DESKTOP
+}
+
+enum serviceTypeEnum {
+  KM_MONTHS
+  HOURS
+  WARRANTY
+}
+
+enum emergencyService {
+  YES
+  NO
+}
