@@ -1,5 +1,6 @@
-import { customservice } from "@prisma/client";
 import express from "express";
+import { addServiceValidator } from "./addservice.validator";
+
 const PORT = 3000;
 const addService = require("./src/routes/addservice.route");
 const addSpecialOffer = require("./src/routes/addspecialoffer.route");
@@ -23,7 +24,7 @@ app.use(express.json());
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-app.use("/api/addservice", addService);
+app.use("/api/addservice", addServiceValidator, addService);
 app.use("/api/addspecialoffer", addSpecialOffer);
 app.use("/api/customservice", customService);
 app.use("/api/garageinformation", garageInformation);
