@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import AccountSettingService from "../services/accountSetting.service";
+import { validationResult } from "express-validator";
 
 class AccountSettingController {
   accountSettingService: AccountSettingService;
@@ -35,8 +36,13 @@ class AccountSettingController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userSignUP = await this.accountSettingService.create(req.body);
-      res.status(201).json(userSignUP);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const userSignUP = await this.accountSettingService.create(req.body);
+        res.status(201).json(userSignUP);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res
         .status(500)
