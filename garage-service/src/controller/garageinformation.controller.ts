@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import GarageInformationService from "../services/garageinformation.service";
+import { validationResult } from "express-validator";
 
 class GarageInformationController {
   garageInformationService: GarageInformationService;
@@ -37,10 +38,14 @@ class GarageInformationController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const newGarageInformation = await this.garageInformationService.create(
-        req.body
-      );
-      res.status(201).json(newGarageInformation);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const garageInformationService =
+          await this.garageInformationService.create(req.body);
+        res.status(201).json({ garageInformationService });
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res
         .status(500)
@@ -51,9 +56,11 @@ class GarageInformationController {
   update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const updatedgarageInformation =
-        await this.garageInformationService.update(Number(id), req.body);
-      res.status(200).json(updatedgarageInformation);
+      const garageInformation = await this.garageInformationService.update(
+        Number(id),
+        req.body
+      );
+      res.status(200).json(garageInformation);
     } catch (error) {
       res
         .status(500)

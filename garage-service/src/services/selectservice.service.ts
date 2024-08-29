@@ -1,31 +1,32 @@
 import { selectservice } from "@prisma/client";
-import SelectServiceRepository from "../repository/selectservice.repository";
+import SelectRepository from "../repository/selectservice.repository";
 
-class SelectServiceService {
-  selectServiceRepository: SelectServiceRepository;
+class SelectService {
+  selectRepository: SelectRepository;
   constructor() {
-    this.selectServiceRepository = new SelectServiceRepository();
+    this.selectRepository = new SelectRepository();
   }
 
   create = async (data: Omit<selectservice, "id">): Promise<selectservice> => {
-    return await this.selectServiceRepository.create(data);
+    return await this.selectRepository.create(data);
   };
 
   getAll = async () => {
-    return await this.selectServiceRepository.getAll();
+    console.log("select service service");
+    return await this.selectRepository.getAll();
   };
 
   getById = async (id: number) => {
-    return await this.selectServiceRepository.getById(id);
+    return await this.selectRepository.getById(id);
   };
 
   update = async (id: number, data: Partial<Omit<selectservice, "id">>) => {
-    return await this.selectServiceRepository.update(id, data);
+    return await this.selectRepository.update(id, data);
   };
 
   delete = async (id: number) => {
-    return await this.selectServiceRepository.delete(id);
+    return await this.selectRepository.delete(id);
   };
 }
 
-export default SelectServiceService;
+export default SelectService;

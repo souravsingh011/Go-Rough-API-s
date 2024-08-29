@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import ServiceService from "../services/service.service";
+import { validationResult } from "express-validator";
 
 class ServiceController {
   serviceService: ServiceService;
@@ -8,6 +9,7 @@ class ServiceController {
   }
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("Inside service controller");
       const serviceService = await this.serviceService.getAll();
       res.status(200).json(serviceService);
     } catch (error) {
@@ -31,8 +33,13 @@ class ServiceController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const newserviceService = await this.serviceService.create(req.body);
-      res.status(201).json(newserviceService);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const serviceService = await this.serviceService.create(req.body);
+        res.status(201).json(serviceService);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res.status(500).json({ message: "Error creating select service", error });
     }
@@ -41,11 +48,11 @@ class ServiceController {
   update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const updatedserviceService = await this.serviceService.update(
+      const serviceService = await this.serviceService.update(
         Number(id),
         req.body
       );
-      res.status(200).json(updatedserviceService);
+      res.status(200).json(serviceService);
     } catch (error) {
       res.status(500).json({ message: "Error updating select service", error });
     }

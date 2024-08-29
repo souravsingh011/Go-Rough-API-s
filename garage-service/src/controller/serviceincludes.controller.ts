@@ -1,6 +1,8 @@
 // src/controllers/serviceIncludeController.ts
 import { Request, Response } from "express";
 import ServiceIncludesService from "../services/serviceincludes.service";
+import { validateHeaderName } from "http";
+import { validationResult } from "express-validator";
 
 class ServiceIncludeController {
   serviceIncludesService: ServiceIncludesService;
@@ -38,8 +40,15 @@ class ServiceIncludeController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const serviceInclude = await this.serviceIncludesService.create(req.body);
-      res.status(201).json(serviceInclude);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const serviceInclude = await this.serviceIncludesService.create(
+          req.body
+        );
+        res.status(201).json(serviceInclude);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res
         .status(500)

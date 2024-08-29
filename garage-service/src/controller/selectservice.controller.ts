@@ -1,15 +1,17 @@
 // src/controllers/selectServiceController.ts
 import { Request, Response } from "express";
-import SelectServiceService from "../services/selectservice.service";
+import { validationResult } from "express-validator";
+import SelectService from "../services/selectservice.service";
 
-class SelectServiceController {
-  selectServiceService: SelectServiceService;
+class SelectController {
+  selectService: SelectService;
   constructor() {
-    this.selectServiceService = new SelectServiceService();
+    this.selectService = new SelectService();
   }
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      const cities = await this.selectServiceService.getAll();
+      console.log("inside select service controller");
+      const cities = await this.selectService.getAll();
       res.status(200).json(cities);
     } catch (error) {
       res.status(500).json({ message: "Error fetching select service", error });
@@ -19,7 +21,7 @@ class SelectServiceController {
   getById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const selectService = await this.selectServiceService.getById(Number(id));
+      const selectService = await this.selectService.getById(Number(id));
       if (selectService) {
         res.status(200).json(selectService);
       } else {
@@ -32,8 +34,13 @@ class SelectServiceController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const newselectService = await this.selectServiceService.create(req.body);
-      res.status(201).json(newselectService);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const selectService = await this.selectService.create(req.body);
+        res.status(201).json(selectService);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res.status(500).json({ message: "Error creating select service", error });
     }
@@ -42,11 +49,11 @@ class SelectServiceController {
   update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const updatedselectService = await this.selectServiceService.update(
+      const selectService = await this.selectService.update(
         Number(id),
         req.body
       );
-      res.status(200).json(updatedselectService);
+      res.status(200).json(selectService);
     } catch (error) {
       res.status(500).json({ message: "Error updating select service", error });
     }
@@ -55,7 +62,7 @@ class SelectServiceController {
   delete = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      await this.selectServiceService.delete(Number(id));
+      await this.selectService.delete(Number(id));
       res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: "Error deleting select service", error });
@@ -63,4 +70,4 @@ class SelectServiceController {
   };
 }
 
-export default SelectServiceController;
+export default SelectController;

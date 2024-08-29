@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import TrackOrderService from "../services/trackorder.service";
+import { validationResult } from "express-validator";
 
 class OrderController {
   trackOrderService: TrackOrderService;
@@ -31,8 +32,13 @@ class OrderController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const order = await this.trackOrderService.create(req.body);
-      res.status(201).json(order);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const order = await this.trackOrderService.create(req.body);
+        res.status(201).json(order);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res.status(500).json({ message: "Error creating order", error });
     }

@@ -1,6 +1,7 @@
 // src/controllers/cityTypeController.ts
 import { Request, Response } from "express";
 import ServiceTypeService from "../services/servicetype.service";
+import { validationResult } from "express-validator";
 
 class ServiceTypeController {
   serviceTypeService: ServiceTypeService;
@@ -32,8 +33,13 @@ class ServiceTypeController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const cityType = await this.serviceTypeService.create(req.body);
-      res.status(201).json(cityType);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const cityType = await this.serviceTypeService.create(req.body);
+        res.status(201).json(cityType);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res.status(500).json({ message: "Error creating city type", error });
     }

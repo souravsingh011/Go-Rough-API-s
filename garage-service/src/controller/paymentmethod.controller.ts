@@ -1,6 +1,7 @@
 // src/controllers/paymentController.ts
 import { Request, Response } from "express";
 import PaymentMethodService from "../services/paymentmethod.service";
+import { validationResult } from "express-validator";
 
 class PaymentController {
   paymentMethodService: PaymentMethodService;
@@ -32,8 +33,13 @@ class PaymentController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const newpayment = await this.paymentMethodService.create(req.body);
-      res.status(201).json(newpayment);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const payment = await this.paymentMethodService.create(req.body);
+        res.status(201).json(payment);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res.status(500).json({ message: "Error creating payment", error });
     }
@@ -42,11 +48,11 @@ class PaymentController {
   update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     try {
-      const updatedpayment = await this.paymentMethodService.update(
+      const payment = await this.paymentMethodService.update(
         Number(id),
         req.body
       );
-      res.status(200).json(updatedpayment);
+      res.status(200).json(payment);
     } catch (error) {
       res.status(500).json({ message: "Error updating payment", error });
     }
