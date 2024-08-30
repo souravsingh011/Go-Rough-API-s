@@ -1,10 +1,6 @@
 import { body } from "express-validator";
 
 export const garageInformationValidator = [
-  body("mechanicSignUpId")
-    .not()
-    .isEmpty()
-    .withMessage("Field should not be empty"),
   body("garage_business_hours_id")
     .not()
     .isEmpty()

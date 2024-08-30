@@ -1,18 +1,14 @@
 import { body } from "express-validator";
 
 export const paymentMethodValidator = [
-  body("garage_information_id")
-    .not()
-    .isEmpty()
+  body("garageInformationId")
+    .notEmpty()
     .withMessage("Field should not be empty"),
-  body("upi_number").not().isEmpty().withMessage("Field should not be empty"),
+  body("upi_number").notEmpty().withMessage("Field should not be empty"),
 
-  body("card_number").not().isEmpty().withMessage("Field should not be empty"),
-  body("expiry_date")
-    .not()
-    .isEmpty()
-    .isDate()
-    .withMessage("Must be a valid date"),
-  body("cvv").not().isEmpty().withMessage("Field should not be empty"),
-  body("card_holder").not().isEmpty().withMessage("Field should not be empty"),
+  body("card_number").notEmpty().withMessage("Field should not be empty"),
+  body("expiry_date").notEmpty().withMessage("Must be a valid date"),
+  body("cvv").notEmpty().withMessage("Field should not be empty"),
+  body("card_holder").notEmpty().withMessage("Field should not be empty"),
+  body("serviceId").notEmpty(),
 ];

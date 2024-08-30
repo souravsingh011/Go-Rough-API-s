@@ -11,10 +11,3 @@ class GarageInformationIdAlreadyExistsError extends Error {
     this.name = "Garage Information Id Already Exists Error";
   }
 }
-
-class ServiceIdAlreadyExistsError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "Service Id Already Exists Error";
-  }
-}

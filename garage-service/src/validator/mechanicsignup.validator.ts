@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 export const mechanicSignUpValidator = [
-  body("count_id").not().isEmpty().withMessage("Field should not be empty"),
+  body("county_id").not().isEmpty().withMessage("Field should not be empty"),
 
   body("phone_no")
     .not()
@@ -23,5 +23,5 @@ export const mechanicSignUpValidator = [
     .not()
     .isEmpty()
     .withMessage("Field should not be empty"),
-  body("role").not().isEmpty().withMessage("Field should not be empty"),
+  body("roles").not().isEmpty().withMessage("Field should not be empty"),
 ];

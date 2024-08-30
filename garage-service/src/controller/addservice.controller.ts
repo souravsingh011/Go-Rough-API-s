@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import AddServiceService from "../services/addservice.service";
 import { validationResult } from "express-validator";
-const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken");
-dotenv.config();
+
 class AddServiceController {
   addServiceService: AddServiceService;
   constructor() {
@@ -34,29 +32,11 @@ class AddServiceController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const {
-        title,
-        checkbox,
-        price_hour_id,
-        emergency,
-        serviceId,
-        jwtSecretKey,
-      } = req.body;
-
-      let data = {
-        title,
-        checkbox,
-        price_hour_id,
-        emergency,
-        serviceId,
-      };
-
-      const token = jwt.sign(data, jwtSecretKey);
-
       const errors = validationResult(req);
       if (errors.isEmpty()) {
         const addService = await this.addServiceService.create(req.body);
-        res.status(201).json({ addService, token });
+        console.log("inside create");
+        res.status(201).json({ addService });
       } else {
         res.status(422).json({ errors: errors.array() });
       }
@@ -86,29 +66,6 @@ class AddServiceController {
     } catch (error) {
       res.status(500).json({ message: "Error deleting add Service", error });
     }
-  };
-
-  // Basic example for JWT
-  auto = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    const title = req.body.title;
-    const checkbox = req.body.checkbox;
-    const price_hour_id = req.body.price_hour_id;
-    const emergency = req.body.emergency;
-    const serviceId = req.body.serviceId;
-    let jwtSecretKey = process.env.JWT_SECRET_KEY;
-    let data = {
-      title: title,
-      checkbox: checkbox,
-      price_hour: price_hour_id,
-      emergency: emergency,
-      serviceId: serviceId,
-    };
-
-    const token = jwt.sign(data, jwtSecretKey);
   };
 }
 

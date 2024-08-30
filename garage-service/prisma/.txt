@@ -1,0 +1,18 @@
+INSERT INTO mechanicSignUp (
+country_id,
+phone_no,
+verification_code,
+full_name.
+password,
+alternate_phone_no,
+profile_photo,
+role
+) VALUES (
+2,
+'+1122334455',
+'789012',
+'Alice Smith',
+'password 123',
+'+5566778899',
+'https://example.com/alice_photo.jpg', profile_photo
+'admin')

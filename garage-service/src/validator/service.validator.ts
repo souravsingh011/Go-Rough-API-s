@@ -5,16 +5,16 @@ export const serviceValidator = [
     .not()
     .isEmpty()
     .withMessage("Must select from provided options"),
-  body("garage_information_id")
+  body("garageInformationId")
     .not()
     .isEmpty()
     .withMessage("Field should not be empty"),
 
-  body("add_service_id")
+  body("service_type_id")
     .not()
     .isEmpty()
     .withMessage("Field should not be empty"),
-  body("service_type_id")
+  body("service_includes_id")
     .not()
     .isEmpty()
     .withMessage("Field should not be empty"),

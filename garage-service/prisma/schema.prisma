@@ -13,6 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model garage {
+  id                  Int               @id @default(autoincrement())
+  mechanicSignUpId    Int
+  mechanicSignUp      mechanicSignUp    @relation(fields: [mechanicSignUpId], references: [id])
+  garageInformationId Int
+  garageInformation   garageInformation @relation(fields: [garageInformationId], references: [id])
+
+  @@map("garage")
+}
+
 // Models
 model mechanicSignUp {
   id                 Int                       @id @default(autoincrement())
@@ -24,9 +34,11 @@ model mechanicSignUp {
   alternate_phone_no String?
   profile_photo      String?
   roles              String
-  garageInformation  garageInformation[]
   loggedInDevices    mechanicLoggedInDevices[]
   mechanicDetails    mechanicDetails[]
+  garage             garage[]
+
+  @@map("mechanicSignUp")
 }
 
 model mechanicLoggedInDevices {
@@ -43,7 +55,6 @@ model mechanicLoggedInDevices {
 
 model garageInformation {
   id                       Int               @id @default(autoincrement())
-  mechanicSignUpId         Int
   garage_business_hours_id Int
   address_line1            String
   address_line2            String
@@ -54,12 +65,29 @@ model garageInformation {
   years_in_business        Int
   business_license         String
   profile_photo            String?
-  selectservice            selectservice?
   services                 service[]
   specialOffers            addSpecialOffer[]
   home                     home?
   paymentMethods           paymentMethod[]
-  mechanicSignUp           mechanicSignUp    @relation(fields: [mechanicSignUpId], references: [id])
+  garage                   garage[]
+  selectserviceId          Int?
+  selectservice            selectservice[]
+
+  @@map("garageInformation")
+}
+
+model includeservice {
+  id                Int             @id @default(autoincrement())
+  serviceId         Int
+  service           service         @relation(fields: [serviceId], references: [id])
+  selectserviceId   Int
+  selectservice     selectservice   @relation(fields: [selectserviceId], references: [id])
+  serviceIncludesId Int
+  serviceIncludes   serviceIncludes @relation(fields: [serviceIncludesId], references: [id])
+  serviceTypeId     Int
+  serviceType       serviceType     @relation(fields: [serviceTypeId], references: [id])
+  customserviceId   Int
+  customservice     customservice   @relation(fields: [customserviceId], references: [id])
 }
 
 model selectservice {
@@ -67,25 +95,33 @@ model selectservice {
   add_price_hours_id      Int
   service_garage_provides String
   emergency               emergencyService
-  garageInformationId     Int               @unique
-  garageInformation       garageInformation @relation(fields: [garageInformationId], references: [id])
+  garagInformationeId     Int
+  garageInformation       garageInformation @relation(fields: [garagInformationeId], references: [id])
+  includeservice          includeservice[]
+
+  @@map("select_service") // Ensure correct mapping if needed
 }
 
 model service {
-  id                  Int               @id @default(autoincrement())
+  id                  Int                @id @default(autoincrement())
   status              serviceStatus
-  garageInformationId Int
   service_type_id     Int
   service_includes_id Int
+  garageInformationId Int
   addservice          addservice[]
   customservice       customservice[]
-  garageInformation   garageInformation @relation(fields: [garageInformationId], references: [id])
   serviceIncludes     serviceIncludes[]
   serviceType         serviceType[]
+  garageInformation   garageInformation? @relation(fields: [garageInformationId], references: [id])
+  paymentMethod       paymentMethod[]
+  trackOrder          trackOrder[]
+  includeservice      includeservice[]
+
+  @@map("services")
 }
 
 model serviceIncludes {
-  id                           Int     @id @default(autoincrement())
+  id                           Int              @id @default(autoincrement())
   engine_oil_replacement       Boolean
   oil_filter_replacement       Boolean
   air_filter_cleaning          Boolean
@@ -96,11 +132,12 @@ model serviceIncludes {
   car_wash                     Boolean
   interior_vacuuming           Boolean
   serviceId                    Int
-  service                      service @relation(fields: [serviceId], references: [id])
+  service                      service          @relation(fields: [serviceId], references: [id])
+  includeservice               includeservice[]
 }
 
 model serviceType {
-  id                Int             @id @default(autoincrement())
+  id                Int              @id @default(autoincrement())
   title             String
   type              serviceTypeEnum
   km_months         Int
@@ -108,16 +145,18 @@ model serviceType {
   warranty          String
   included_services String
   serviceId         Int
-  service           service         @relation(fields: [serviceId], references: [id])
+  service           service          @relation(fields: [serviceId], references: [id])
+  includeservice    includeservice[]
 }
 
 model customservice {
-  id        Int     @id @default(autoincrement())
-  title     String
-  price     Float
-  isAddOn   Boolean
-  serviceId Int
-  service   service @relation(fields: [serviceId], references: [id])
+  id             Int              @id @default(autoincrement())
+  title          String
+  price          Float
+  isAddOn        Boolean
+  serviceId      Int
+  service        service          @relation(fields: [serviceId], references: [id])
+  includeservice includeservice[]
 }
 
 model addservice {
@@ -125,8 +164,8 @@ model addservice {
   title         String
   checkbox      Boolean
   price_hour_id Int
-  emergency     emergencyService
   serviceId     Int
+  emergency     emergencyService
   service       service          @relation(fields: [serviceId], references: [id])
 }
 
@@ -147,6 +186,8 @@ model trackOrder {
   booking_status bookingStatus
   status         serviceStatus
   status_date    DateTime
+  serviceId      Int
+  service        service       @relation(fields: [serviceId], references: [id])
 }
 
 model paymentMethod {
@@ -157,6 +198,8 @@ model paymentMethod {
   expiry_date         DateTime
   cvv                 String
   card_holder         String
+  serviceId           Int
+  service             service           @relation(fields: [serviceId], references: [id])
   garageInformation   garageInformation @relation(fields: [garageInformationId], references: [id])
 }
 
