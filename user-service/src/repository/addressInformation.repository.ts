@@ -1,4 +1,5 @@
 import { PrismaClient, addressInformation } from "@prisma/client";
+import { UserSignUpIdAlreadyExistsError } from "../public/custom.error";
 
 const prisma = new PrismaClient();
 class AddressInformationRepository {
@@ -13,6 +14,13 @@ class AddressInformationRepository {
   create = async (
     data: Omit<addressInformation, "id">
   ): Promise<addressInformation> => {
+    const existingRecord = await prisma.accountSetting.findFirst({
+      where: { user_sign_up_id: data.user_sign_up_id },
+    });
+
+    if (existingRecord?.user_sign_up_id) {
+      throw new UserSignUpIdAlreadyExistsError("User SignUp Id Already Exists");
+    }
     return await prisma.addressInformation.create({ data });
   };
 

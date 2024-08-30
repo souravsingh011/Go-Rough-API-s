@@ -1,4 +1,5 @@
 import { PrismaClient, payment } from "@prisma/client";
+import { UserSignUpIdAlreadyExistsError } from "../public/custom.error";
 
 const prisma = new PrismaClient();
 class PaymentRepository {
@@ -11,6 +12,13 @@ class PaymentRepository {
   };
 
   create = async (data: Omit<payment, "id">): Promise<payment> => {
+    const existingRecord = await prisma.accountSetting.findFirst({
+      where: { user_sign_up_id: data.user_sign_up_id },
+    });
+
+    if (existingRecord?.user_sign_up_id) {
+      throw new UserSignUpIdAlreadyExistsError("User SignUp Id Already Exists");
+    }
     return await prisma.payment.create({ data });
   };
 

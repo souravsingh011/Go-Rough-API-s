@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import AddressInformationService from "../services/addressInformation.service";
+import { validationResult } from "express-validator";
 
 class AddressInformationController {
   addressInformationService: AddressInformationService;
@@ -37,8 +38,15 @@ class AddressInformationController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userSignUP = await this.addressInformationService.create(req.body);
-      res.status(201).json(userSignUP);
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const userSignUP = await this.addressInformationService.create(
+          req.body
+        );
+        res.status(201).json(userSignUP);
+      } else {
+        res.status(422).json({ errors: errors.array() });
+      }
     } catch (error) {
       res
         .status(500)
