@@ -3,7 +3,6 @@ import { PrismaClient, service } from "@prisma/client";
 const prisma = new PrismaClient();
 class ServiceRepository {
   getAll = async (): Promise<service[]> => {
-    console.log("inside service repository");
     return await prisma.service.findMany();
   };
 

@@ -35,7 +35,6 @@ class AddServiceController {
       const errors = validationResult(req);
       if (errors.isEmpty()) {
         const addService = await this.addServiceService.create(req.body);
-        console.log("inside create");
         res.status(201).json({ addService });
       } else {
         res.status(422).json({ errors: errors.array() });

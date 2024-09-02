@@ -3,7 +3,6 @@ import { PrismaClient, selectservice } from "@prisma/client";
 const prisma = new PrismaClient();
 class SelectRepository {
   getAll = async (): Promise<selectservice[]> => {
-    console.log("inside select service");
     return await prisma.selectservice.findMany();
   };
 

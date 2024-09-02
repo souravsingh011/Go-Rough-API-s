@@ -10,7 +10,6 @@ class SelectController {
   }
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("inside select service controller");
       const cities = await this.selectService.getAll();
       res.status(200).json(cities);
     } catch (error) {

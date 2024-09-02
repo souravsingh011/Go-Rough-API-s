@@ -9,7 +9,6 @@ class ServiceController {
   }
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("Inside service controller");
       const serviceService = await this.serviceService.getAll();
       res.status(200).json(serviceService);
     } catch (error) {

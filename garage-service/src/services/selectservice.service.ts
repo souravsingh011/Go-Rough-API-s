@@ -12,7 +12,6 @@ class SelectService {
   };
 
   getAll = async () => {
-    console.log("select service service");
     return await this.selectRepository.getAll();
   };
 
