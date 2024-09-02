@@ -1,4 +1,7 @@
 import express from "express";
+import { verifyTokenMiddleware } from "./src/middlewares/authMiddlewares";
+import { login } from "./src/controller/auth.controller";
+import { signup } from "./src/controller/auth.controller";
 import { addServiceValidator } from "./src/validator/addservice.validator";
 import { addSpecialOfferValidator } from "./src/validator/addspecialoffer.validator";
 import { customServiceValidator } from "./src/validator/customservice.validator";
@@ -33,10 +36,11 @@ const trackOrder = require("./src/routes/trackorder.route");
 const app = express();
 
 app.use(express.json());
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+app.post("/login", login);
+app.post("/signup", signup);
 app.use("/api/addservice", addServiceValidator, addService);
 app.use("/api/addspecialoffer", addSpecialOfferValidator, addSpecialOffer);
 app.use("/api/customservice", customServiceValidator, customService);

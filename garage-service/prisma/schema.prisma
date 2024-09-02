@@ -27,7 +27,7 @@ model garage {
 model mechanicSignUp {
   id                 Int                       @id @default(autoincrement())
   county_id          Int
-  phone_no           String
+  phone_no           String                    @unique
   verification_code  String
   full_name          String
   password           String
