@@ -37,8 +37,20 @@ model mechanicSignUp {
   loggedInDevices    mechanicLoggedInDevices[]
   mechanicDetails    mechanicDetails[]
   garage             garage[]
+  refreshTokens      RefreshToken[] // Relation to RefreshToken model
 
   @@map("mechanicSignUp")
+}
+
+model RefreshToken {
+  id             Int            @id @default(autoincrement())
+  token          String         @unique
+  userId         Int
+  mechanicSignUp mechanicSignUp @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt      DateTime // Expiration time for the refresh token
+  createdAt      DateTime       @default(now())
+
+  @@map("refreshTokens")
 }
 
 model mechanicLoggedInDevices {

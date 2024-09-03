@@ -41,6 +41,7 @@ app.listen(PORT, () => {
 });
 app.post("/login", login);
 app.post("/signup", signup);
+app.use(verifyTokenMiddleware);
 app.use("/api/addservice", addServiceValidator, addService);
 app.use("/api/addspecialoffer", addSpecialOfferValidator, addSpecialOffer);
 app.use("/api/customservice", customServiceValidator, customService);

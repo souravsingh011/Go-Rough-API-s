@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { generateToken } from "../utils/jwtUtils";
+import { generateToken, refreshTokenn } from "../utils/jwtUtils";
 import bcrypt from "bcryptjs";
-
 const prisma = new PrismaClient();
 
 export async function signup(req: Request, res: Response) {
-  const { phone_no, password, county_id, verification_code, full_name, role } =
+  const { phone_no, password, county_id, verification_code, full_name, roles } =
     req.body;
 
   if (!phone_no || !password) {
@@ -27,23 +26,36 @@ export async function signup(req: Request, res: Response) {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    console.log("creating user");
     // Create a new user
     const user = await prisma.mechanicSignUp.create({
       data: {
+        county_id: county_id,
         phone_no,
+        verification_code: verification_code,
+        full_name: full_name,
         password: hashedPassword,
-        county_id: county_id || null, // Provide default or null
-        verification_code: verification_code || null, // Provide default or null
-        full_name: full_name || null, // Provide default or null
-        roles: role || "defaultRole", // Provide a default value if needed
+        roles: roles,
       },
     });
 
-    // Generate a JWT token
-    const token = generateToken({ id: user.id, phone_no: user.phone_no });
+    // Generate tokens
+    const accessToken = generateToken({ id: user.id, phone_no: user.phone_no });
+    const refreshToken = refreshTokenn({
+      id: user.id,
+      phone_no: user.phone_no,
+    });
 
-    res.status(201).json({ token });
+    // Store refresh token in the database
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days expiration
+      },
+    });
+
+    res.status(201).json({ accessToken, refreshToken });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -76,10 +88,29 @@ export async function login(req: Request, res: Response) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    // Generate a JWT token
-    const token = generateToken({ id: user.id, phone_no: user.phone_no });
+    // Generate tokens
+    const accessToken = generateToken({ id: user.id, phone_no: user.phone_no });
+    const refreshToken = refreshTokenn({
+      id: user.id,
+      phone_no: user.phone_no,
+    });
 
-    res.json({ token });
+    // Store refresh token in the database (optional)
+    await prisma.refreshToken.upsert({
+      where: { id: user.id },
+      update: {
+        token: refreshToken,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days expiration
+      },
+      create: {
+        token: refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days expiration
+      },
+    });
+
+    // Send tokens to client
+    res.json({ accessToken, refreshToken });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
